@@ -1,0 +1,21 @@
+* About
+
+~nibbler~ is a command-line script written in /[[https://nodejs.org/en/][Node.js]]/ to clone all /gists/ of a user from Github.
+
+** Usage
+
+   Calling ~nibbler~ without any arguments will show the help menu.
+   #+BEGIN_EXAMPLE
+   § ./nibbler.js
+   Usage: /Users/bchandra/Documents/Codebase/area51/nibbler/nibbler.js <user> <token> <output-path> [<alias>]
+   #+END_EXAMPLE
+   
+   A typical invocation will look like the following.
+   #+BEGIN_EXAMPLE
+      § ./nibbler.js johndoe 4c407bb6a9743c3eb9ca326a60a692d1a2f8dd7f ./gists
+   #+END_EXAMPLE
+
+   ~nibbler~ will use ~git~ as the user name and prompt for a password to clone the gist, if required. If you have, however, an already configured SSH configuration block (for instance, specifying the private key to use), you can supply the alias of this block in command-line as follows.
+   #+BEGIN_EXAMPLE
+      § ./nibbler.js johndoe 4c407bb6a9743c3eb9ca326a60a692d1a2f8dd7f ./gists github
+   #+END_EXAMPLE
