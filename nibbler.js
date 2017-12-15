@@ -54,12 +54,15 @@ function queryGists(params, callback) {
     return UNDEF;
 }
 
+function gistName(file) {
+    return path.parse(file).name;
+}
 
-function gistName(gist) {
+
+function pickGistName(gFiles) {
     // Use the name of the first file in the gist as the directory name.
-    var files = Object.keys(gist.files);
-    files.sort();
-    return path.parse(files[0]).name;
+    gFiles.sort();
+    return gistName(gFiles[0]);
 }
 
 
@@ -72,9 +75,22 @@ function isDir(path) {
 }
 
 
-function pullGist(gname, alias, callback) {
+function localPath(files) {
+    if (!files.length) {
+        return UNDEF;
+    }
+
+    const PATH = gistName(files.pop());
+    if (isDir(PATH)) {
+        return PATH;
+    }
+    return localPath(files);
+}
+
+
+function pullGist(gName, alias, callback) {
     const CWD = process.cwd();
-    process.chdir(gname);
+    process.chdir(gName);
 
     const CMD = "git pull --rebase";
     console.log("##> updating using `" + CMD + "` ...");
@@ -87,8 +103,8 @@ function pullGist(gname, alias, callback) {
 }
 
 
-function cloneGist(gist, alias, callback) {
-    const CMD = "git clone " + alias + ":" + gist.id + ".git " + gistName(gist);
+function cloneGist(gID, gName, alias, callback) {
+    const CMD = "git clone " + alias + ":" + gID + ".git " + gName;
     console.log("##> cloning using `" + CMD + "` ...");
     exec(CMD,
          function (error, stdout, stderr) {
@@ -110,13 +126,17 @@ function cloneGists(gists, alias, callback) {
         return cloneGists(gists, alias, callback);
     };
 
-    if (isDir(gistName(gist))) {
-        console.log("#> gist: " + gist.id);
+    const gID      = gist.id;
+    const gFiles   = Object.keys(gist.files);
+    const gName    = pickGistName(gFiles);
+    const gistPath = localPath(Array.from(gFiles));
+
+    console.log("#> gist: " + gName + "<" + gID + ">");
+    if (gistPath) {
         console.log("##> already cloned.");
-        return pullGist(gist, alias, contn);
+        return pullGist(gistPath, alias, contn);
     } else {
-        console.log("#> gist: " + gistName(gist) + "<" + gist.id + ">");
-        return cloneGist(gist, alias, contn);
+        return cloneGist(gID, gName, alias, contn);
     }
 }
 
