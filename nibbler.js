@@ -13,6 +13,7 @@
 const exec  = require("child_process").exec;
 const fs    = require("fs");
 const https = require("https");
+const path  = require("path");
 
 const NONE = null;
 const UNDEF = undefined;
@@ -54,6 +55,14 @@ function queryGists(params, callback) {
 }
 
 
+function gistName(gist) {
+    // Use the name of the first file in the gist as the directory name.
+    var files = Object.keys(gist.files);
+    files.sort();
+    return path.parse(files[0]).name;
+}
+
+
 function isDir(path) {
     try {
         return fs.lstatSync(path).isDirectory();
@@ -63,13 +72,11 @@ function isDir(path) {
 }
 
 
-function pullGist(gist, alias, callback) {
+function pullGist(gname, alias, callback) {
     const CWD = process.cwd();
-    process.chdir(gist.id);
+    process.chdir(gname);
 
     const CMD = "git pull --rebase";
-    console.log("#> gist: " + gist.id);
-    console.log("##> already cloned.");
     console.log("##> updating using `" + CMD + "` ...");
     exec(CMD, function (error, stdout, stderr) {
         process.chdir(CWD);
@@ -81,8 +88,7 @@ function pullGist(gist, alias, callback) {
 
 
 function cloneGist(gist, alias, callback) {
-    const CMD = "git clone " + alias + ":" + gist.id + ".git";
-    console.log("#> gist: " + gist.id);
+    const CMD = "git clone " + alias + ":" + gist.id + ".git " + gistName(gist);
     console.log("##> cloning using `" + CMD + "` ...");
     exec(CMD,
          function (error, stdout, stderr) {
@@ -104,9 +110,12 @@ function cloneGists(gists, alias, callback) {
         return cloneGists(gists, alias, callback);
     };
 
-    if (isDir(gist.id)) {
+    if (isDir(gistName(gist))) {
+        console.log("#> gist: " + gist.id);
+        console.log("##> already cloned.");
         return pullGist(gist, alias, contn);
     } else {
+        console.log("#> gist: " + gistName(gist) + "<" + gist.id + ">");
         return cloneGist(gist, alias, contn);
     }
 }
