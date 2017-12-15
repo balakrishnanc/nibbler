@@ -4,7 +4,7 @@
 // Created by Balakrishnan Chandrasekaran on 2017-11-29 09:49 +0100.
 // Copyright (c) 2017 Balakrishnan Chandrasekaran <balakrishnan.c@gmail.com>.
 //
-// Based on Bostock's gist [1].
+// Based on Mike Bostock's gist [1].
 // [1] "The Gist to Clone All Gists", Mike Bostock,
 //     https://gist.github.com/mbostock/3883098
 //
