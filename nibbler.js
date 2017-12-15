@@ -93,7 +93,7 @@ function pullGist(gName, alias, callback) {
     process.chdir(gName);
 
     const CMD = "git pull --rebase";
-    console.log("##> updating using `" + CMD + "` ...");
+    // console.log("##> updating using `" + CMD + "` ...");
     exec(CMD, function (error, stdout, stderr) {
         process.chdir(CWD);
         if (error) callback(error);
@@ -105,7 +105,7 @@ function pullGist(gName, alias, callback) {
 
 function cloneGist(gID, gName, alias, callback) {
     const CMD = "git clone " + alias + ":" + gID + ".git " + gName;
-    console.log("##> cloning using `" + CMD + "` ...");
+    // console.log("##> cloning using `" + CMD + "` ...");
     exec(CMD,
          function (error, stdout, stderr) {
              if (error) callback(error);
