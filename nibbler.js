@@ -10,6 +10,7 @@
 //
 "use strict";
 
+const chalk = require("chalk");
 const exec  = require("child_process").exec;
 const fs    = require("fs");
 const https = require("https");
@@ -127,15 +128,22 @@ function cloneGists(gists, alias, callback) {
     };
 
     const gID      = gist.id;
+    const shortID  = gID.slice(0, 8);
     const gFiles   = Object.keys(gist.files);
     const gName    = pickGistName(gFiles);
     const gistPath = localPath(Array.from(gFiles));
 
-    console.log("#> gist: " + gName + "<" + gID + ">");
+    // Strings in color.
+    const cgName   = chalk.bold.keyword('blue')(gName);
+    const cshortID = chalk.keyword('gray')(shortID);
+
     if (gistPath) {
-        console.log("##> already cloned.");
+        console.log(chalk.keyword('orange')("-> updating ") +
+                    cgName + "<" + cshortID + ">");
         return pullGist(gistPath, alias, contn);
     } else {
+        console.log(chalk.keyword('green')("-> cloning ") +
+                    cgName + "<" + cshortID + ">");
         return cloneGist(gID, gName, alias, contn);
     }
 }
