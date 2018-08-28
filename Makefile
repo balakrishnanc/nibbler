@@ -10,8 +10,12 @@ SSH_CONF_ALIAS:=github
 .PHONY: all
 
 all:
-	@[ -z $(GITHUB_USR) ] && \
-		echo 'Error: `GITHUB_USR` undefined!' >& 2 && exit 2
-	@[ -z $(GITHUB_TOKEN) ] && \
-		echo 'Error: `GITHUB_TOKEN` undefined!' >& 2 && exit 2
+	@if [ -z $(GITHUB_USR) ]; then					\
+		echo 'Error: `GITHUB_USR` undefined!' >& 2; \
+		exit 2;										\
+	fi
+	@if [ -z $(GITHUB_TOKEN) ]; then					\
+		echo 'Error: `GITHUB_TOKEN` undefined!' >& 2;	\
+		exit 2;											\
+	fi
 	@$(NIBBLER) $(GITHUB_USR) $(GITHUB_TOKEN) $(OUT_PATH) $(SSH_CONF_ALIAS)
