@@ -1,0 +1,29 @@
+{
+  "name": "nibbler",
+  "version": "1.0.0",
+  "description": "Node utility to clone or update all Github gists",
+  "main": "nibbler.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/balakrishnanc/nibbler.git"
+  },
+  "author": "Balakrishnan Chandrasekaran",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/balakrishnanc/nibbler/issues"
+  },
+  "homepage": "https://github.com/balakrishnanc/nibbler#readme",
+  "dependencies": {
+    "ansi-styles": "^6.1.0",
+    "chalk": "^5.0.0",
+    "color-convert": "^2.0.1",
+    "color-name": "^1.1.4",
+    "escape-string-regexp": "^5.0.0",
+    "has-flag": "^5.0.1",
+    "supports-color": "^9.2.1"
+  }
+}
