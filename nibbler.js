@@ -10,11 +10,11 @@
 //
 "use strict";
 
-const chalk = require("chalk");
-const exec  = require("child_process").exec;
-const fs    = require("fs");
-const https = require("https");
-const path  = require("path");
+import chalk from 'chalk';
+import cp from 'child_process';
+import fs from 'fs';
+import https from 'https';
+import path from 'path';
 
 const NONE = null;
 const UNDEF = undefined;
@@ -95,7 +95,7 @@ function pullGist(gName, alias, callback) {
 
     const CMD = "git pull --rebase";
     // console.log("##> updating using `" + CMD + "` ...");
-    exec(CMD, function (error, stdout, stderr) {
+    cp.exec(CMD, function (error, stdout, stderr) {
         process.chdir(CWD);
         if (error) callback(error);
         callback(NONE);
@@ -107,7 +107,7 @@ function pullGist(gName, alias, callback) {
 function cloneGist(gID, gName, alias, callback) {
     const CMD = "git clone " + alias + ":" + gID + ".git " + gName;
     // console.log("##> cloning using `" + CMD + "` ...");
-    exec(CMD,
+    cp.exec(CMD,
          function (error, stdout, stderr) {
              if (error) callback(error);
              callback(NONE);
