@@ -115,6 +115,11 @@ function cloneGist(gID, gName, alias, callback) {
     return UNDEF;
 }
 
+const warn = chalk.hex('#FFA500');
+const info = chalk.green;
+const popout = chalk.blue.bold;
+const subtle = chalk.gray;
+
 
 function cloneGists(gists, alias, callback) {
     if (!gists) return callback(NONE);
@@ -134,15 +139,15 @@ function cloneGists(gists, alias, callback) {
     const gistPath = localPath(Array.from(gFiles));
 
     // Strings in color.
-    const cgName   = chalk.bold.keyword('blue')(gName);
-    const cshortID = chalk.keyword('gray')(shortID);
+    const cgName   = popout(gName);
+    const cshortID = subtle(shortID);
 
     if (gistPath) {
-        console.log(chalk.keyword('orange')("-> updating ") +
+        console.log(warn("-> updating ") +
                     cgName + "<" + cshortID + ">");
         return pullGist(gistPath, alias, contn);
     } else {
-        console.log(chalk.keyword('green')("-> cloning ") +
+        console.log(info("-> cloning ") +
                     cgName + "<" + cshortID + ">");
         return cloneGist(gID, gName, alias, contn);
     }
