@@ -158,8 +158,18 @@ function fetchPageOfGists(params, alias, callback) {
     return queryGists(params.next(), function(error, gists) {
         if (error) return callback(error);
 
+        if (typeof gists.length == 'undefined') {
+            var msg;
+            if (typeof gists.message != 'undefined') {
+                msg = gists.message;
+            } else {
+                msg = 'Failed to retrieve gists!';
+            }
+            return callback(msg);
+        }
+
         var next;
-        if (gists.length) {
+        if (typeof gists.length != 'undefined' && gists.length) {
             next = params;
         } else {
             next = NONE;
